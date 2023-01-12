@@ -1,7 +1,7 @@
 import express, {Express} from 'express';
-import { SquaredRSocializeApp } from './setupServer';
-import databaseConnection from './setupDatabase';
-import { config } from './config';
+import { SquaredRSocializeApp } from '@root/setupServer';
+import databaseConnection from '@root/setupDatabase';
+import { config } from '@root/config';
 
 class Application {
   public initializeApp(): void {
