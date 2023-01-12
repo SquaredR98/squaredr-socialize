@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   Application,
   json,
@@ -17,10 +19,10 @@ import compression from 'compression';
 import { Server } from 'socket.io';
 import { createClient } from 'redis';
 import { createAdapter } from '@socket.io/redis-adapter';
-import applicationRoute from './routes';
+import applicationRoute from '@root/routes';
 
-import { config } from './config';
-import { CustomError, IErrorResponse } from './shared/globals/helpers/error-handler';
+import { config } from '@root/config';
+import { CustomError, IErrorResponse } from '@globals/helpers/error-handler';
 import Logger from 'bunyan';
 
 const SERVER_PORT = process.env.SERVER_PORT || 8080;
@@ -119,5 +121,8 @@ export class SquaredRSocializeApp {
     });
   }
 
-  private socketIOConnections(io: Server): void {}
+  private socketIOConnections(io: Server): void {
+    log.info('SocketIOConnection');
+    io;
+  }
 }
