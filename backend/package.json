@@ -4,7 +4,9 @@
   "description": "Node based backend for the social media application.",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon ./build",
     "dev": "nodemon -r tsconfig-paths/register src/index.ts | ./node_modules/.bin/bunyan",
+    "build": "ttsc -p .",
     "lint:check": "eslint 'src/**/*.ts'",
     "lint:fix": "eslint 'src/**/*.ts' --fix",
     "prettier:check": "prettier --check 'src/**/*.{ts,json}'",
