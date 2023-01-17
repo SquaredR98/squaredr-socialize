@@ -24,6 +24,7 @@ import applicationRoute from '@root/routes';
 import { config } from '@root/config';
 import { CustomError, IErrorResponse } from '@globals/helpers/error-handler';
 import Logger from 'bunyan';
+import { RedisAdapter } from '@socket.io/redis-adapter';
 
 const SERVER_PORT = process.env.SERVER_PORT || 8080;
 const log: Logger = config.createLogger('server');
@@ -110,7 +111,8 @@ export class SquaredRSocializeApp {
     const subClient = pubClient.duplicate();
 
     await Promise.all([pubClient.connect(), subClient.connect()]);
-    io.adapter(/* createAdapter(pubClient, subClient) */);
+    const adapter: RedisAdapter = createAdapter(pubClient, subClient) as unknown as RedisAdapter;
+    io.adapter();
     return io;
   }
 
