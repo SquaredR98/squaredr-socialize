@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { hash, compare } from 'bcryptjs';
 import { IAuthDocument } from '@auth/interfaces/auth.interface';
 import { model, Model, Schema } from 'mongoose';
