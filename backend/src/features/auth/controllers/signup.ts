@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ObjectId } from 'mongodb';
 import { Request, Response } from 'express';
+import JWT from 'jsonwebtoken';
 import { joiValidation } from '@globals/decorators/joi-validation.decorators';
 import { signupSchema } from '@auth/schemes/signup';
 import { IAuthDocument, ISignUpData } from '@auth/interfaces/auth.interface';
@@ -12,6 +14,9 @@ import HTTP_STATUS from 'http-status-codes';
 import { IUserDocument } from '@user/interfaces/user.interface';
 import { UserCache } from '../../../shared/services/redis/user.cache';
 import { config } from '@root/config';
+import { omit } from 'lodash';
+import { authQueue } from '@services/queues/auth.queue';
+import { userQueue } from '@services/queues/user.queue';
 
 const userCache: UserCache = new UserCache();
 
@@ -41,7 +46,6 @@ export class SignUp {
 
         const uploadResult: UploadApiResponse = (await upload(avatarImage, `${userObjectId}`, true, true)) as UploadApiResponse;
 
-        console.log(uploadResult);
         if (!uploadResult?.public_id) {
             throw new BadRequestError('File upload: Error occured please try again');
         }
@@ -51,7 +55,28 @@ export class SignUp {
         userDataForCache.profilePicture = `https://res.cloudinary.com/${config.CLOUD_NAME}/image/upload/v${uploadResult?.version}/${userObjectId}`;
         await userCache.saveUserToCache(`${userObjectId}`, uId, userDataForCache);
 
-        res.status(HTTP_STATUS.CREATED).json({ message: 'User Created Successfully' });
+        // Add to database
+        omit(userDataForCache, ['uId', 'username', 'email', 'avatarColumn', 'password']);
+        authQueue.addAuthUserJob('addAuthUserToDB', { value: userDataForCache });
+        userQueue.addUserJob('addUserToDB', { value: userDataForCache });
+
+        const userJwt: string = SignUp.prototype.signedToken(authData, userObjectId);
+        req.session = { jwt: userJwt };
+
+        res.status(HTTP_STATUS.CREATED).json({ message: 'User Created Successfully', user: userDataForCache, token: userJwt });
+    }
+
+    private signedToken(data: IAuthDocument, userObjectId: ObjectId): string {
+        return JWT.sign(
+            {
+                userId: userObjectId,
+                uId: data.uId,
+                email: data.email,
+                username: data.username,
+                avatarColor: data.avatarColor
+            },
+            config.JWT_SECRET_KEY!
+        );
     }
 
     private signUpData(data: ISignUpData): IAuthDocument {

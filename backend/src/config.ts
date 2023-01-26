@@ -16,6 +16,7 @@ class Config {
     // SECURE KEYS
     public SECRET_ONE: string | undefined;
     public SECRET_TWO: string | undefined;
+    public JWT_SECRET_KEY: string | undefined;
 
     // FRONTEND URL
     public CLIENT_URL: string | undefined;
@@ -38,6 +39,7 @@ class Config {
 
         this.SECRET_ONE = process.env.SECRET_ONE || '0123456789';
         this.SECRET_TWO = process.env.SECRET_TWO || '9876543210';
+        this.JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || 'squaredr@socialize' ;
 
         this.CLIENT_URL = process.env.DATABASE_URI || '';
 
