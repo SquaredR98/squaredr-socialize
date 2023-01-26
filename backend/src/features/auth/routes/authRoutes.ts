@@ -25,5 +25,4 @@ class AuthRoutes {
     }
 }
 
-
 export const authRoutes: AuthRoutes = new AuthRoutes();

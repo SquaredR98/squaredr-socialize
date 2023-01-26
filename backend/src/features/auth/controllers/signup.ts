@@ -57,7 +57,7 @@ export class SignUp {
 
         // Add to database
         omit(userDataForCache, ['uId', 'username', 'email', 'avatarColumn', 'password']);
-        authQueue.addAuthUserJob('addAuthUserToDB', { value: userDataForCache });
+        authQueue.addAuthUserJob('addAuthUserToDB', { value: authData });
         userQueue.addUserJob('addUserToDB', { value: userDataForCache });
 
         const userJwt: string = SignUp.prototype.signedToken(authData, userObjectId);
@@ -95,7 +95,7 @@ export class SignUp {
 
     private userData(data: IAuthDocument, userObjectId: ObjectId): IUserDocument {
         const { _id, username, email, uId, password, avatarColor } = data;
-
+        console.log(_id, userObjectId);
         return {
             _id: userObjectId,
             authId: _id,
