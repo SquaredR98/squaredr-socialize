@@ -39,7 +39,7 @@ class Config {
 
         this.SECRET_ONE = process.env.SECRET_ONE || '0123456789';
         this.SECRET_TWO = process.env.SECRET_TWO || '9876543210';
-        this.JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || 'squaredr@socialize' ;
+        this.JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || 'squaredr@socialize';
 
         this.CLIENT_URL = process.env.DATABASE_URI || '';
 

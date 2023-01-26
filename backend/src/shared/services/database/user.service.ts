@@ -7,14 +7,25 @@ class UserService {
         await UserModel.create(data);
     }
 
-    public async getUserByAuthId(userId: string): Promise<IUserDocument> {
-        const user: IUserDocument[] = await UserModel.aggregate([
-            { $match: {authId: new mongoose.Types.ObjectId(userId) } },
+    public async getUserById(userId: string): Promise<IUserDocument> {
+        const users: IUserDocument[] = await UserModel.aggregate([
+            { $match: { _id: new mongoose.Types.ObjectId(userId) } },
             { $lookup: { from: 'Auth', localField: 'authId', foreignField: '_id', as: 'authId' } },
             { $unwind: '$authId' },
             { $project: this.aggregateProject() }
         ]);
-        return user[0];
+
+        return users[0];
+    }
+
+    public async getUserByAuthId(userId: string): Promise<IUserDocument> {
+        const users: IUserDocument[] = await UserModel.aggregate([
+            { $match: { authId: new mongoose.Types.ObjectId(userId) } },
+            { $lookup: { from: 'Auth', localField: 'authId', foreignField: '_id', as: 'authId' } },
+            { $unwind: '$authId' },
+            { $project: this.aggregateProject() }
+        ]);
+        return users[0];
     }
 
     private aggregateProject() {
