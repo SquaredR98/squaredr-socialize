@@ -3,11 +3,12 @@ import { userWorker } from '@workers/user.worker';
 
 class UserQueue extends BaseQueue {
     constructor() {
-        super('auth');
+        super('user');
         this.processJob('addUserToDB', 5, userWorker.addUserToDB);
     }
 
-    public addUserJob(name: string, data: any): void{
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public addUserJob(name: string, data: any): void {
         this.addJob(name, data);
     }
 }

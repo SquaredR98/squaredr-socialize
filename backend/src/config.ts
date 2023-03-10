@@ -28,6 +28,12 @@ class Config {
     public CLOUD_API_KEY: string | undefined;
     public CLOUD_API_SECRET: string | undefined;
 
+    // MAILING CREDS
+    public SENDER_MAIL_ID: string | undefined;
+    public SENDER_MAIL_PD: string | undefined;
+    public SENDGRID_API_KEY: string | undefined;
+    public SENDGRID_SENDER: string | undefined;
+
     private readonly DEFAULT_DATABASE_URL = 'mongodb://localhost:27027/test';
 
     constructor() {
@@ -39,7 +45,7 @@ class Config {
 
         this.SECRET_ONE = process.env.SECRET_ONE || '0123456789';
         this.SECRET_TWO = process.env.SECRET_TWO || '9876543210';
-        this.JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || 'squaredr@socialize' ;
+        this.JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || 'squaredr@socialize';
 
         this.CLIENT_URL = process.env.DATABASE_URI || '';
 
@@ -48,6 +54,11 @@ class Config {
         this.CLOUD_NAME = process.env.CLOUD_NAME;
         this.CLOUD_API_KEY = process.env.CLOUD_API_KEY;
         this.CLOUD_API_SECRET = process.env.CLOUD_API_SECRET;
+
+        this.SENDER_MAIL_ID = process.env.SENDER_MAIL_ID; 
+        this.SENDER_MAIL_PD = process.env.SENDER_MAIL_PD; 
+        this.SENDGRID_API_KEY = process.env.SENDGRID_API_KEY; 
+        this.SENDGRID_SENDER = process.env.SENDGRID_SENDER; 
     }
 
     public createLogger(name: string): bunyan {
