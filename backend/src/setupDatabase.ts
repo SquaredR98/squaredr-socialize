@@ -10,8 +10,8 @@ export default () => {
         mongoose.set('strictQuery', false);
         mongoose
             .connect(`${config.DATABASE_URL}`, {
-                user: `${config.DATABASE_USR}`,
-                pass: `${config.DATABASE_PAS}`,
+                // user: `${config.DATABASE_USR}`,
+                // pass: `${config.DATABASE_PAS}`,
                 dbName: 'squaredr-socialize-backend'
             })
             .then(() => {
