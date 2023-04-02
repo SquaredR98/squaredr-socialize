@@ -1,6 +1,7 @@
 import { authRoutes } from '@auth/routes/authRoutes';
 import { currentUserRoutes } from '@auth/routes/currentUserRoutes';
 import { authMiddleware } from '@globals/helpers/auth-middleware';
+import { postRoutes } from '@posts/routes/postRoutes';
 import { Application } from 'express';
 import { serverAdapter } from './shared/services/queues/base.queue';
 
@@ -26,6 +27,12 @@ export default (app: Application) => {
          *  Fetches the current user or the logged in user from the database or redis cache
          */
         app.use(BASE_PATH, authMiddleware.verifyUser, currentUserRoutes.routes());
+
+
+        /* @Post Routes
+         *
+         */
+        app.use(BASE_PATH, authMiddleware.verifyUser, postRoutes.routes());
     };
 
     routes();

@@ -17,6 +17,7 @@ import applicationRoute from '@root/routes';
 import { config } from '@root/config';
 import { CustomError, IErrorResponse } from '@globals/helpers/error-handler';
 import Logger from 'bunyan';
+import { SocketIoPostHandler } from './shared/sockets/posts.socket';
 
 const SERVER_PORT = process.env.SERVER_PORT || 8080;
 const log: Logger = config.createLogger('server');
@@ -117,7 +118,8 @@ export class SquaredRSocializeApp {
     }
 
     private socketIOConnections(io: Server): void {
-        log.info('SocketIOConnection');
-        io;
+        const postSocketHandler: SocketIoPostHandler = new SocketIoPostHandler(io);
+
+        postSocketHandler.listen();
     }
 }
